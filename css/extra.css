@@ -1,0 +1,11 @@
+li {
+    line-height: 1;
+}
+
+.alert {
+    background-color: #fae1e8;
+    color: #782c40;
+    border-radius: 8px;
+    border: #782c40 1px solid;
+    padding: 2rem;
+}
