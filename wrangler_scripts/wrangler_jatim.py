@@ -1,10 +1,7 @@
 import os
-
 import json
 import requests
-import html.parser as parser
 from bs4 import BeautifulSoup
-from datetime import datetime, timezone
 
 jatim_raw = requests.get('http://covid19dev.jatimprov.go.id/xweb/draxi').text
 jatim_arr = []
