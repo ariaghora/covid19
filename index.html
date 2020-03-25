@@ -6,25 +6,30 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/extra.css">
   <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="https://gist.github.com/leovarmak/956b1c33e65543ea095c07471c737640/raw/7e3f1e772dee5c17d200fad06a01db5869f9f29a/jquery.ajax-cross-origin.min.js"></script>
+
 </head>
 <body>
   <div class="container">
 
     <div class="row">
       <div class="twelve columns">
-        <h4>Level: Nasional</h4>
+        <h4>Tingkat <span id="txt-tingkat">-</span></h4>
         <strong>Pembaharuan terakhir: </strong> <span>{{update}}</span>
 
         <table class="u-full-width">
           <thead>
             <tr>
               <th>No</th>
-              <th>Nama {{level}}</th>
+              <th>Nama <span id="txt-subtingkat">-</span></th>
               <th>Terkonfirmasi</th>
               <th>Sembuh</th>
               <th>Meninggal</th>
@@ -33,34 +38,8 @@
             </tr>
           </thead>
 
-          <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+          <tbody id="table-body">
+            <!-- Dynamic content goes here -->
           </tbody>
         </table>
       </div>
@@ -84,5 +63,37 @@
     </div>
     
   </div>
+
+  <script src="js/vars.js"></script>
+  <script src="js/wrangler_pusat.js"></script>
+  <script src="js/wrangler_jatim.js"></script>
+  <script>  
+      $(document).ready(function() {
+
+        var renderPage = function (tingkat, wranglerfunc) {
+          wranglerfunc(function(data) {
+            var tbodyTemplate = '';
+            tbodyTemplate += '{{#data}}<tr>\n';
+            tbodyTemplate += '<td>{{no}}</td>\n';
+            tbodyTemplate += '<td>{{nama}}</td>\n';
+            tbodyTemplate += '<td>{{jml_kasus}}</td>\n';
+            tbodyTemplate += '<td>{{jml_sembuh}}</td>\n';
+            tbodyTemplate += '<td>{{jml_meninggal}}</td>\n';
+            tbodyTemplate += '<td>{{jml_odp}}</td>\n';
+            tbodyTemplate += '<td>{{jml_pdp}}</td>\n';
+            tbodyTemplate += '</tr>{{/data}}\n';
+            var tableHtml = Mustache.render(tbodyTemplate, {data: data})
+
+            var subTingkat = tingkat.toLowerCase() === 'nasional' ? 'Provinsi' : 'Kabupaten/Kota';
+
+            $('#txt-tingkat').text(tingkat);
+            $('#txt-subtingkat').text(subTingkat);
+            $('#table-body').html(tableHtml);
+          })
+        }
+
+        renderPage('Provinsi', jatimGetData);
+      })
+    </script>
 </body>
 </html>
