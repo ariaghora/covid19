@@ -9,3 +9,13 @@ li {
     border: #782c40 1px solid;
     padding: 2rem;
 }
+
+.has-detail {
+    color: #1EAEDB;
+}
+
+.has-detail:hover {
+    color: #0FA0CE;
+    cursor: pointer;
+    text-decoration: underline;
+}
