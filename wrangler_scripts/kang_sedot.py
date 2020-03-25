@@ -31,7 +31,7 @@ def sedot_jabar():
     jabar_arr = json.loads(jabar_raw)['data']
 
     nama_kabkot = set(map(lambda x: x['kabkot_str'], jabar_arr)) - {''}
-    nama_status = set(map(lambda x: x['status'], jabar_arr)) | {'meninggal', 'sembuh'} #  - {''}
+    nama_status = sorted(list(set(map(lambda x: x['status'], jabar_arr)) | {'meninggal', 'sembuh'}))
     nama_stage  =  set(map(lambda x: x['stage'], jabar_arr)) 
 
     df = DataFrame(columns=nama_status, index=nama_kabkot).fillna(0)
@@ -44,9 +44,9 @@ def sedot_jabar():
                 df['sembuh'][kasus['kabkot_str']] += 1
         except:
             pass
-
+    
     #  Rename the columns
-    df.columns = ['jml_odp', 'jml_sembuh', 'jml_meninggal', 'jml_pdp', 'jml_kasus']
+    df.columns = ['jml_odp', 'jml_pdp', 'jml_kasus', 'jml_meninggal', 'jml_sembuh']
     df = df.sort_index()
 
     jabar_arr = []
