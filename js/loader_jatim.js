@@ -1,7 +1,7 @@
 var jatimGetData = function(callback) {
   $.get('data/jatim.json', function(res) { 
     
-    var arrProvinsi = JSON.parse(res);
+    var arrProvinsi = res;
     var result = [];
     var cnt = 1;
     for (const o of arrProvinsi) {
