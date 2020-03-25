@@ -21,12 +21,15 @@
 
 <body>
   <div class="container">
+    <div class="row">
+      <div class="twelve columns u-full-width"><h3>Data COVID-19 Indonesia</h3></div>
+    </div>
 
     <div class="row">
       <div class="twelve columns">
         <strong>Penyelarasan data terakhir: </strong> <span>25-03-2020</span>
         <div class="breadcrumb">
-          <span><strong><a href="/">Nasional</a></strong></span> <span id="txt-tingkat">-</span>
+          <span><strong><a href="/">Nasional</a></strong></span> <span class="txt-tingkat">-</span>
         </div>
 
         <table class="u-full-width">
@@ -48,28 +51,27 @@
         </table>
 
         <div class="breadcrumb">
-            <span><strong><a href="/">Nasional</a></strong></span> <span id="txt-tingkat">-</span>
-          </div>
+          <span><strong><a href="/">Nasional</a></strong></span> <span class="txt-tingkat">-</span>
+        </div>
       </div>
     </div>
 
     <div class="row">
       <div class="twelve columns alert" style="margin-top: 5%; text-align: justify;">
         <strong>Disclaimer</strong>: laman ini bukan resmi milik pemerintah. Laman ini dibuat untuk membantu penyajian
-        data seputar COVID-19 di Indonesia secara terpusat. Data diambil otomatis dari berbagai sumber milik pemerintah,
-        serta sebagian input dari kontributor. Hanya beberapa provinsi yang memiliki data per-kabupaten/kota.
+        data seputar COVID-19 di Indonesia secara terpusat. Data diambil otomatis dari berbagai sumber milik pemerintah.
+        Hanya beberapa provinsi yang memiliki data per-kabupaten/kota.
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-top: 24px;">
       <div class="twelve columns">
         <h4>Sumber data</h4>
         <ul>
-          <li>Pusat: <a href="https://www.covid19.go.id/">https://www.covid19.go.id/</a></li>
+          <li>Nasional: <a href="https://www.covid19.go.id/">https://www.covid19.go.id/</a></li>
           <li>Provinsi Jawa Timur: <a href="http://infocovid19.jatimprov.go.id/">http://infocovid19.jatimprov.go.id/</a>
           </li>
-          <li>Provinsi Jawa Tengah: <a
-              href="http://infocovid19.jatimprov.go.id/">http://infocovid19.jatimprov.go.id/</a></li>
+          <li>Provinsi Jawa Tengah: <a href="https://corona.jatengprov.go.id/">https://corona.jatengprov.go.id/</a></li>
         </ul>
       </div>
     </div>
@@ -84,7 +86,6 @@
       $('#table-body').html('Sedang memuat...');
       wranglerfunc(function (data) {
 
-        // var namaTd = '<td>{{nama}}</td>\n';
         for (var i = 0; i < data.length; i++) {
           if (daftarLoaderProvinsi[data[i].nama] !== undefined) {
             var loaderFuncString = daftarLoaderProvinsi[data[i].nama].name;
@@ -106,7 +107,7 @@
 
         var subTingkat = tingkat.toLowerCase() === 'nasional' ? 'Provinsi' : 'Kabupaten/Kota';
 
-        $('#txt-tingkat').text(tingkat.toLowerCase() !== 'nasional' ? ' > ' + tingkat : '');
+        $('.txt-tingkat').text(tingkat.toLowerCase() !== 'nasional' ? ' > ' + tingkat : '');
         $('#txt-subtingkat').text(subTingkat);
         $('#table-body').html(tableHtml);
       })
