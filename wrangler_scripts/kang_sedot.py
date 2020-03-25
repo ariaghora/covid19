@@ -60,7 +60,7 @@ def sedot_jabar():
         }
         for prop in df.columns:
             o[prop] = int(df[prop][kabkot])
-            jabar_arr.append(o)
+        jabar_arr.append(o)
     
     with open(os.path.join(os.path.dirname(__file__), '..', 'data', 'jabar.json'), 'w', encoding='utf8') as outfile:
         json.dump(jabar_arr, outfile)
