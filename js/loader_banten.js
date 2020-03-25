@@ -1,5 +1,5 @@
-var jabarGetData = function (callback) {
-  $.get('data/jabar.json', function (res) {
+var bantenGetData = function (callback) {
+  $.get('data/banten.json', function (res) {
 
     var arrProvinsi = res;
     var result = [];
