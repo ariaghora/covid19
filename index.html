@@ -16,8 +16,6 @@
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script type="text/javascript"
-    src="https://gist.github.com/leovarmak/956b1c33e65543ea095c07471c737640/raw/7e3f1e772dee5c17d200fad06a01db5869f9f29a/jquery.ajax-cross-origin.min.js"></script>
 
 </head>
 
@@ -26,8 +24,10 @@
 
     <div class="row">
       <div class="twelve columns">
-        <h4>Tingkat <span id="txt-tingkat">-</span></h4>
-        <strong>Pembaharuan terakhir: </strong> <span>25-03-2020</span>
+        <strong>Penyelarasan data terakhir: </strong> <span>25-03-2020</span>
+        <div class="breadcrumb">
+          <span><strong><a href="/">Nasional</a></strong></span> <span id="txt-tingkat">-</span>
+        </div>
 
         <table class="u-full-width">
           <thead>
@@ -46,6 +46,10 @@
             <!-- Dynamic content goes here -->
           </tbody>
         </table>
+
+        <div class="breadcrumb">
+            <span><strong><a href="/">Nasional</a></strong></span> <span id="txt-tingkat">-</span>
+          </div>
       </div>
     </div>
 
@@ -102,15 +106,13 @@
 
         var subTingkat = tingkat.toLowerCase() === 'nasional' ? 'Provinsi' : 'Kabupaten/Kota';
 
-        $('#txt-tingkat').text(tingkat);
+        $('#txt-tingkat').text(tingkat.toLowerCase() !== 'nasional' ? ' > ' + tingkat : '');
         $('#txt-subtingkat').text(subTingkat);
         $('#table-body').html(tableHtml);
       })
     }
+
     $(document).ready(function () {
-
-
-
       renderPage('Nasional', pusatGetData);
     })
   </script>

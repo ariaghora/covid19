@@ -12,10 +12,18 @@ li {
 
 .has-detail {
     color: #1EAEDB;
+    text-decoration: underline;
 }
 
 .has-detail:hover {
     color: #0FA0CE;
     cursor: pointer;
-    text-decoration: underline;
+}
+
+.breadcrumb {
+    border: #0FA0CE 1px solid;
+    background-color: #ebf9fc;
+    padding: 10px;
+    border-radius: 8px;
+    /* line-height: 4em; */
 }
