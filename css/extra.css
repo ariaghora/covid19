@@ -10,6 +10,10 @@ li {
     padding: 2rem;
 }
 
+.alert p {
+    margin-bottom: 1rem;
+}
+
 .has-detail {
     color: #1EAEDB;
     text-decoration: underline;
@@ -25,5 +29,4 @@ li {
     background-color: #ebf9fc;
     padding: 10px;
     border-radius: 8px;
-    /* line-height: 4em; */
 }
