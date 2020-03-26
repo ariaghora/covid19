@@ -1,5 +1,5 @@
 var daftarLoaderProvinsi = {
-        'Banten': bantenGetData,
-        'Jawa Barat': jabarGetData,
-        'Jawa Timur': jatimGetData
+        'Banten': 'data/banten.json',
+        'Jawa Barat': 'data/jabar.json',
+        'Jawa Timur': 'data/jatim.json'
 }

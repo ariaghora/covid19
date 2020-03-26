@@ -22,15 +22,43 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="twelve columns u-full-width"><h3>Data COVID-19 Indonesia</h3></div>
+      <div class="twelve columns u-full-width">
+        <h3>Data COVID-19 Indonesia</h3>
+      </div>
     </div>
 
     <div class="row">
       <div class="twelve columns">
         <strong>Penyelarasan data terakhir: </strong> <span>26-03-2020</span>
-        <div class="breadcrumb">
-          <span><strong><a href="#" onclick="renderPage('Nasional', pusatGetData)">Nasional</a></strong></span> <span class="txt-tingkat">-</span>
-        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="breadcrumb">
+        <span><strong><a href="#" onclick="renderPage('Nasional', 'data/pusat.json')">Nasional</a></strong></span> <span
+          class="txt-tingkat">-</span>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 24px;">
+      <div class="four columns">
+        <div>Positif</div>
+        <h3 id="txt-ringkasan-positif">-</h3>
+      </div>
+
+      <div class="four columns">
+        <div>Sembuh</div>
+        <h3 id="txt-ringkasan-sembuh">-</h3>
+      </div>
+
+      <div class="four columns">
+        <div>Meninggal</div>
+        <h3 id="txt-ringkasan-meninggal">-</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="twelve columns">
 
         <table class="u-full-width">
           <thead>
@@ -51,7 +79,8 @@
         </table>
 
         <div class="breadcrumb">
-            <span><strong><a href="#" onclick="renderPage('Nasional', pusatGetData)">Nasional</a></strong></span> <span class="txt-tingkat">-</span>
+          <span><strong><a href="#" onclick="renderPage('Nasional', 'data/pusat.json')">Nasional</a></strong></span>
+          <span class="txt-tingkat">-</span>
         </div>
       </div>
     </div>
@@ -59,9 +88,15 @@
     <div class="row">
       <div class="twelve columns alert" style="margin-top: 5%; text-align: justify;">
         <strong>Catatan:</strong>
-          <p>Laman ini bukan resmi milik pemerintah. Laman ini dibuat untuk membantu penyajian data seputar COVID-19 di Indonesia secara terpusat. Jadikan sumber dari pemerintah sebagai acuan utama. Laman ini hanya sebagai pembanding.</p>
-          <p>Data diambil dari berbagai sumber milik pemerintah melalui <em>web scraping</em>. Hanya beberapa provinsi yang memiliki data per-kabupaten/kota, dan kelengkapan informasi satu provinsi bisa saja berbeda dari provinsi lainnya. Data provinsi lain menyusul, jika tersedia dan memungkinkan untu diekstraksi.</p>
-          <p>Kode sumber laman ini dapat diakses di tautan <a href="https://github.com/ariaghora/covid19">https://github.com/ariaghora/covid19</a>. Laporan dan pertanyaan bisa disampaikan via surel ke <a href="mailto:hello@ghora.net">hello@ghora.net</a>.</p>
+        <p>Laman ini bukan resmi milik pemerintah. Laman ini dibuat untuk membantu penyajian data seputar COVID-19 di
+          Indonesia secara terpusat. Jadikan sumber dari pemerintah sebagai acuan utama. Laman ini hanya sebagai
+          pembanding.</p>
+        <p>Data diambil dari berbagai sumber milik pemerintah melalui <em>web scraping</em>. Hanya beberapa provinsi
+          yang memiliki data per-kabupaten/kota, dan kelengkapan informasi satu provinsi bisa saja berbeda dari provinsi
+          lainnya. Data provinsi lain menyusul, jika tersedia dan memungkinkan untu diekstraksi.</p>
+        <p>Kode sumber laman ini dapat diakses di tautan <a
+            href="https://github.com/ariaghora/covid19">https://github.com/ariaghora/covid19</a>. Laporan dan pertanyaan
+          bisa disampaikan via surel ke <a href="mailto:hello@ghora.net">hello@ghora.net</a>.</p>
       </div>
     </div>
 
@@ -70,30 +105,57 @@
         <h4>Sumber data</h4>
         <ul>
           <li>Nasional: <a href="https://www.covid19.go.id/">https://www.covid19.go.id/</a></li>
-          <li>Provinsi Banten: <a href="https://infocorona.bantenprov.go.id/">https://infocorona.bantenprov.go.id/</a></li>
+          <li>Provinsi Banten: <a href="https://infocorona.bantenprov.go.id/">https://infocorona.bantenprov.go.id/</a>
+          </li>
           <li>Provinsi Jawa Timur: <a href="http://infocovid19.jatimprov.go.id/">http://infocovid19.jatimprov.go.id/</a>
           </li>
-          <li>Provinsi Jawa Barat: <a href="https://pikobar.jabarprov.go.id/data/">https://pikobar.jabarprov.go.id/data/</a></li>
+          <li>Provinsi Jawa Barat: <a
+              href="https://pikobar.jabarprov.go.id/data/">https://pikobar.jabarprov.go.id/data/</a></li>
         </ul>
       </div>
     </div>
 
   </div>
 
-  <script src="js/loader_pusat.js"></script>
-  <script src="js/loader_banten.js"></script>
-  <script src="js/loader_jatim.js"></script>
-  <script src="js/loader_jabar.js"></script>
   <script src="js/vars.js"></script>
   <script>
-    var renderPage = function (tingkat, wranglerfunc) {
-      $('#table-body').html('Sedang memuat...');
-      wranglerfunc(function (data) {
+    var getData = function (url, callback) {
+      $.get(url, function (res) {
 
+        var arrProvinsi = res.data;
+        var arr = [];
+        var cnt = 1;
+        for (const o of arrProvinsi) {
+          var newObj = {
+            no: cnt,
+            nama: o.nama,
+            jml_kasus: o.jml_kasus,
+            jml_sembuh: o.jml_sembuh,
+            jml_meninggal: o.jml_meninggal,
+            jml_odp: o.jml_odp,
+            jml_pdp: o.jml_pdp
+          }
+          cnt++;
+          arr.push(newObj);
+        }
+
+        result = {
+          ringkasan: res.ringkasan,
+          data: arr
+        }
+
+        callback(result);
+      })
+    }
+
+    var renderPage = function (tingkat, url) {
+      $('#table-body').html('Sedang memuat...');
+      getData(url, function (res) {
+        var data = res.data
         for (var i = 0; i < data.length; i++) {
           if (daftarLoaderProvinsi[data[i].nama] !== undefined) {
-            var loaderFuncString = daftarLoaderProvinsi[data[i].nama].name;
-            data[i].nama = `<span class="has-detail" onclick=\"renderPage(\'${data[i].nama}\', ${loaderFuncString})\">${data[i].nama}</span>`
+            var dataUrl = daftarLoaderProvinsi[data[i].nama];
+            data[i].nama = `<span class="has-detail" onclick=\"renderPage(\'${data[i].nama}\', \'${dataUrl}\')\">${data[i].nama}</span>`
           }
         }
 
@@ -112,13 +174,17 @@
         var subTingkat = tingkat.toLowerCase() === 'nasional' ? 'Provinsi' : 'Kabupaten/Kota';
 
         $('.txt-tingkat').text(tingkat.toLowerCase() !== 'nasional' ? ' > ' + tingkat : '');
+
+        $('#txt-ringkasan-positif').text(res.ringkasan.jml_kasus)
+        $('#txt-ringkasan-sembuh').text(res.ringkasan.jml_sembuh)
+        $('#txt-ringkasan-meninggal').text(res.ringkasan.jml_meninggal)
         $('#txt-subtingkat').text(subTingkat);
         $('#table-body').html(tableHtml);
       })
     }
 
     $(document).ready(function () {
-      renderPage('Nasional', pusatGetData);
+      renderPage('Nasional', 'data/pusat.json');
     })
   </script>
 </body>

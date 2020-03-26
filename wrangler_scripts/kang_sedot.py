@@ -5,6 +5,38 @@ import requests
 from bs4 import BeautifulSoup
 from pandas import DataFrame
 
+def sedot_pusat():
+    pusat_raw = requests.get('https://services5.arcgis.com/VS6HdKS0VfIhv8Ct/arcgis/rest/services/COVID19_Indonesia_per_Provinsi/FeatureServer/0/query?f=json&where=(Kasus_Posi%20%3C%3E%200)%20AND%20(Provinsi%20%3C%3E%20%27Indonesia%27)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Kasus_Posi%20desc&outSR=102100&resultOffset=0&resultRecordCount=34&cacheHint=true').text
+    pusat_json_arr = json.loads(pusat_raw)['features']
+    pusat_arr = []
+
+    n_positif, n_sembuh, n_meninggal = 0, 0, 0
+    for i, o in enumerate(pusat_json_arr):
+        pusat_arr.append({
+            'no': i+1,
+            'nama': o['attributes']['Provinsi'],
+            'jml_kasus': int(o['attributes']['Kasus_Posi']),
+            'jml_sembuh': int(o['attributes']['Kasus_Semb']),
+            'jml_meninggal': int(o['attributes']['Kasus_Meni']),
+            'jml_odp': '-',
+            'jml_pdp': '-',
+        })
+        n_positif += int(o['attributes']['Kasus_Posi'])
+        n_sembuh += int(o['attributes']['Kasus_Semb'])
+        n_meninggal += int(o['attributes']['Kasus_Meni'])
+    out = {
+        'ringkasan': {
+            'jml_kasus': n_positif,
+            'jml_sembuh': n_sembuh,
+            'jml_meninggal': n_meninggal,
+            'jml_odp': '-',
+            'jml_pdp': '-',
+        },
+        'data': pusat_arr
+    }
+    with open(os.path.join(os.path.dirname(__file__), '..', 'data', 'pusat.json'), 'w', encoding='utf8') as outfile:
+        json.dump(out, outfile)
+
 def sedot_banten():
     banten_raw = requests.get('https://infocorona.bantenprov.go.id/kasus-terkonfirmasi').text
     banten_arr = []
@@ -22,9 +54,20 @@ def sedot_banten():
             }
             cnt += 1
             banten_arr.append(o)
+    
+    out = {
+        'ringkasan': {
+            'jml_kasus': '-',
+            'jml_sembuh': '-',
+            'jml_meninggal': '-',
+            'jml_odp': '-',
+            'jml_pdp': '-',
+        },
+        'data': banten_arr
+    }
 
     with open(os.path.join(os.path.dirname(__file__), '..', 'data', 'banten.json'), 'w', encoding='utf8') as outfile:
-        json.dump(banten_arr, outfile)
+        json.dump(out, outfile)
 
 def sedot_jabar():
     jabar_raw = requests.get('https://covid19-public.digitalservice.id/analytics/longlat/').text
@@ -62,8 +105,19 @@ def sedot_jabar():
             o[prop] = int(df[prop][kabkot])
         jabar_arr.append(o)
     
+    out = {
+        'ringkasan': {
+            'jml_kasus': '-',
+            'jml_sembuh': '-',
+            'jml_meninggal': '-',
+            'jml_odp': '-',
+            'jml_pdp': '-',
+        },
+        'data': jabar_arr
+    }
+    
     with open(os.path.join(os.path.dirname(__file__), '..', 'data', 'jabar.json'), 'w', encoding='utf8') as outfile:
-        json.dump(jabar_arr, outfile)
+        json.dump(out, outfile)
 
 def sedot_jatim():
     jatim_raw = requests.get('http://covid19dev.jatimprov.go.id/xweb/draxi').text
@@ -82,10 +136,22 @@ def sedot_jatim():
         cnt += 1
         jatim_arr.append(o)
 
+    out = {
+        'ringkasan': {
+            'jml_kasus': '-',
+            'jml_sembuh': '-',
+            'jml_meninggal': '-',
+            'jml_odp': '-',
+            'jml_pdp': '-',
+        },
+        'data': jatim_arr
+    }
+
     with open(os.path.join(os.path.dirname(__file__), '..', 'data', 'jatim.json'), 'w', encoding='utf8') as outfile:
-        json.dump(jatim_arr, outfile)
+        json.dump(out, outfile)
 
 daftar_kang_sedot = [
+    ('pusat', sedot_pusat),
     ('banten', sedot_banten), 
     ('jabar', sedot_jabar), 
     ('jatim', sedot_jatim)
