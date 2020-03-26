@@ -41,17 +41,17 @@
     </div>
 
     <div class="row" style="margin-top: 24px;">
-      <div class="four columns">
+      <div class="four columns center">
         <div>Positif</div>
         <h3 id="txt-ringkasan-positif">-</h3>
       </div>
 
-      <div class="four columns">
+      <div class="four columns center">
         <div>Sembuh</div>
         <h3 id="txt-ringkasan-sembuh">-</h3>
       </div>
 
-      <div class="four columns">
+      <div class="four columns center">
         <div>Meninggal</div>
         <h3 id="txt-ringkasan-meninggal">-</h3>
       </div>
@@ -121,30 +121,7 @@
   <script>
     var getData = function (url, callback) {
       $.get(url, function (res) {
-
-        var arrProvinsi = res.data;
-        var arr = [];
-        var cnt = 1;
-        for (const o of arrProvinsi) {
-          var newObj = {
-            no: cnt,
-            nama: o.nama,
-            jml_kasus: o.jml_kasus,
-            jml_sembuh: o.jml_sembuh,
-            jml_meninggal: o.jml_meninggal,
-            jml_odp: o.jml_odp,
-            jml_pdp: o.jml_pdp
-          }
-          cnt++;
-          arr.push(newObj);
-        }
-
-        result = {
-          ringkasan: res.ringkasan,
-          data: arr
-        }
-
-        callback(result);
+        callback(res);
       })
     }
 
